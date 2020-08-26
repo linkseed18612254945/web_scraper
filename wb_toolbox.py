@@ -27,13 +27,8 @@ class WeiboSpiderTool(object):
 
 if __name__ == '__main__':
     weibo = WeiboSpiderTool()
-    bids = ['JhIm25aWX',
-            'JhFMrb03F',
-             'JhEWYtG1y',
-             'JhzoWFFg5',
-             'JhvOd8dkx',
-             'JhrBXc7jb',
-             'Jhqec60Hf']
+    bids = ['JhrBXc7jb',
+            'Jhqec60Hf']
     for bid in bids:
         weibo.get_wb_comment(bid)
 

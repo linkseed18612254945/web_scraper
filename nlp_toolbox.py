@@ -18,5 +18,5 @@ class NLPTools(object):
 
 if __name__ == '__main__':
     nlp = NLPTools()
-    res = nlp.sentiment_predict('冷水滩公安局确实实至名归，擅长破冷水', 'snow')
+    res = nlp.sentiment_predict('冷水滩公安局确实实至名归，擅长破冷水', kernel='snow')
     print(res)
