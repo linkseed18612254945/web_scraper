@@ -17,7 +17,9 @@ class WeiboSpiderTool(object):
     def get_users_info(self):
         self.wb_user_spider.start()
 
-    def get_wb_comment(self):
+    def get_wb_comment(self, bid):
+        if bid is not None:
+            self.wb_comment_spider.wid = bid
         self.wb_comment_spider.start()
 
     def get_topic_wb(self):
@@ -25,5 +27,13 @@ class WeiboSpiderTool(object):
 
 if __name__ == '__main__':
     weibo = WeiboSpiderTool()
-    weibo.get_users_info()
+    bids = ['JhIm25aWX',
+            'JhFMrb03F',
+             'JhEWYtG1y',
+             'JhzoWFFg5',
+             'JhvOd8dkx',
+             'JhrBXc7jb',
+             'Jhqec60Hf']
+    for bid in bids:
+        weibo.get_wb_comment(bid)
 

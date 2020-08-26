@@ -28,10 +28,9 @@ from time import sleep
 from random import randint
 
 
-class WeiboCommentScrapy(Thread):
+class WeiboCommentScrapy():
 
     def __init__(self, config):
-        Thread.__init__(self)
         self.config = config
         self.headers = {
             'user-agent': config.get('user_agent'),
@@ -131,7 +130,7 @@ class WeiboCommentScrapy(Thread):
             writer.writerows(result)
         print('已成功将{}条评论写入{}中'.format(len(result),'comment/' + self.wid + '.csv'))
 
-    def run(self):
+    def start(self):
         res = requests.get('https://weibo.cn/comment/{}'.format(self.wid),headers=self.headers,verify=False)
         commentNum = re.findall("评论\[.*?\]",res.text)[0]
         commentNum = int(commentNum[3:len(commentNum)-1])
