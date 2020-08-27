@@ -21,7 +21,7 @@ from requests.adapters import HTTPAdapter
 from tqdm import tqdm
 
 logger = logging.getLogger('weibo')
-
+timestr = '%Y-%m-%d %H:%M:%S'
 
 class WeiboUserSpider(object):
     def __init__(self, config):
@@ -115,7 +115,7 @@ class WeiboUserSpider(object):
     def is_date(self, since_date):
         """判断日期格式是否正确"""
         try:
-            datetime.strptime(since_date, '%Y-%m-%d')
+            datetime.strptime(since_date, timestr)
             return True
         except ValueError:
             return False
@@ -475,21 +475,21 @@ class WeiboUserSpider(object):
     def standardize_date(self, created_at):
         """标准化微博发布时间"""
         if u'刚刚' in created_at:
-            created_at = datetime.now().strftime('%Y-%m-%d')
+            created_at = datetime.now().strftime(timestr)
         elif u'分钟' in created_at:
             minute = created_at[:created_at.find(u'分钟')]
             minute = timedelta(minutes=int(minute))
-            created_at = (datetime.now() - minute).strftime('%Y-%m-%d')
+            created_at = (datetime.now() - minute).strftime(timestr)
         elif u'小时' in created_at:
             hour = created_at[:created_at.find(u'小时')]
             hour = timedelta(hours=int(hour))
-            created_at = (datetime.now() - hour).strftime('%Y-%m-%d')
+            created_at = (datetime.now() - hour).strftime(timestr)
         elif u'昨天' in created_at:
             day = timedelta(days=1)
-            created_at = (datetime.now() - day).strftime('%Y-%m-%d')
+            created_at = (datetime.now() - day).strftime(timestr)
         elif created_at.count('-') == 1:
             year = datetime.now().strftime('%Y')
-            created_at = year + '-' + created_at
+            created_at = year + '-' + created_at + ' 12:00:00'
         return created_at
 
     def standardize_info(self, weibo):
@@ -643,9 +643,9 @@ class WeiboUserSpider(object):
                             if wb['id'] in self.weibo_id_list:
                                 continue
                             created_at = datetime.strptime(
-                                wb['created_at'], '%Y-%m-%d')
+                                wb['created_at'], timestr)
                             since_date = datetime.strptime(
-                                self.user_config['since_date'], '%Y-%m-%d')
+                                self.user_config['since_date'], timestr)
                             if created_at < since_date:
                                 if self.is_pinned_weibo(w):
                                     continue
@@ -1016,14 +1016,14 @@ class WeiboUserSpider(object):
             self.get_user_info()
             self.print_user_info()
             since_date = datetime.strptime(self.user_config['since_date'],
-                                           '%Y-%m-%d')
-            today = datetime.strptime(str(date.today()), '%Y-%m-%d')
+                                           timestr)
+            today = datetime.now()
             if since_date <= today:
                 page_count = self.get_page_count()
                 wrote_count = 0
                 page1 = 0
                 random_pages = random.randint(1, 5)
-                self.start_date = datetime.now().strftime('%Y-%m-%d')
+                self.start_date = datetime.now().strftime(timestr)
                 for page in tqdm(range(1, page_count + 1)):
                     is_end = self.get_one_page(page)
                     if is_end:

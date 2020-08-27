@@ -27,8 +27,9 @@ class WeiboSpiderTool(object):
 
 if __name__ == '__main__':
     weibo = WeiboSpiderTool()
-    bids = ['JhrBXc7jb',
-            'Jhqec60Hf']
-    for bid in bids:
-        weibo.get_wb_comment(bid)
+    weibo.get_users_info()
+    # bids = ['JhrBXc7jb',
+    #         'Jhqec60Hf']
+    # for bid in bids:
+    #     weibo.get_wb_comment(bid)
 
